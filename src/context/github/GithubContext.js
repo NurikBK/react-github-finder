@@ -29,6 +29,23 @@ export function GithubProvider({ children }) {
     });
   }
 
+  async function getUser(login) {
+    setIsLoading();
+
+    const res = await fetch(`${GITHUB_URL}/search/users?q=${login}`);
+
+    if (res.status === 404) {
+      window.location = '/notfound';
+    } else {
+      const data = await res.json();
+      console.log(data);
+      dispatch({
+        type: 'GET_USER',
+        payload: data.items[0],
+      });
+    }
+  }
+
   // set isLoading
   function setIsLoading() {
     dispatch({ type: 'SET_LOADING' });
@@ -38,15 +55,16 @@ export function GithubProvider({ children }) {
     dispatch({
       type: 'CLEAR_USERS',
     });
-    console.log('click');
   }
 
   return (
     <GithubContext.Provider
       value={{
         users: state.users,
+        user: state.user,
         isLoading: state.isLoading,
         searchUsers,
+        getUser,
         clearUsers,
       }}
     >
