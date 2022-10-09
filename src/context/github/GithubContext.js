@@ -9,6 +9,7 @@ const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 export function GithubProvider({ children }) {
   const initialState = {
     users: [],
+    user: {},
     isLoading: false,
   };
 
@@ -46,7 +47,7 @@ export function GithubProvider({ children }) {
         users: state.users,
         isLoading: state.isLoading,
         searchUsers,
-        clearUsers
+        clearUsers,
       }}
     >
       {children}
